@@ -1,0 +1,30 @@
+{
+  "name": "particles",
+  "version": "1.0.0",
+  "description": "Particles canvas aniamtion",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohdovais/particles.git"
+  },
+  "keywords": [
+    "canvas",
+    "particles"
+  ],
+  "author": "Mohd Ovais",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohdovais/particles/issues"
+  },
+  "homepage": "https://github.com/mohdovais/particles#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-buble": "^0.21.0",
+    "rollup": "^1.27.14",
+    "rollup-plugin-terser": "^5.1.3"
+  }
+}
