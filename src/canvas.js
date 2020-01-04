@@ -1,5 +1,4 @@
 import { nearestParticles, moveWithinCanvas } from "./particles.js";
-import { win } from "./contants";
 
 /**
  * 
@@ -7,9 +6,8 @@ import { win } from "./contants";
  */
 export function resizer(canvas) {
   return () => {
-    const pixelRatio = win.devicePixelRatio || 1;
-    const width = canvas.offsetWidth * pixelRatio;
-    const height = canvas.offsetHeight * pixelRatio;
+    const width = canvas.offsetWidth;
+    const height = canvas.offsetHeight;
     canvas.width = width;
     canvas.height = height;
     return { width, height };
