@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Particles</title>
     <style>
+        body{
+            background-color: black;
+        }
         canvas {
             position: fixed;
             top: 0;
@@ -34,7 +37,8 @@
             destroy = init(document.getElementById('canvas'), {
                 count,
                 distance: Math.floor(count / 2),
-                speed: 4
+                speed: 4,
+                strokeStyle: 'white'
             });
         }
         window.addEventListener('resize', onResize);

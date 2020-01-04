@@ -1,8 +1,8 @@
 import { nearestParticles, moveWithinCanvas } from "./particles.js";
 
 /**
- * 
- * @param {HTMLCanvasElement} canvas 
+ *
+ * @param {HTMLCanvasElement} canvas
  */
 export function resizer(canvas) {
   return () => {
@@ -20,13 +20,14 @@ export function resizer(canvas) {
  * @param {Array} particles
  * @param {Number} distance
  */
-export function draw(canvas, particles, distance) {
+export function draw(canvas, particles, { distance, strokeStyle }) {
   const threshold = 0;
   const { width, height } = canvas;
   const distanceSquare = distance * distance;
   const context = canvas.getContext("2d");
+
   context.fillStyle = "black";
-  context.strokeStyle = "rgba(0,0,0,0.1)";
+  context.strokeStyle = strokeStyle || "rgba(0,0,0,0.1)";
 
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.beginPath();

@@ -23,10 +23,9 @@ function createParticle({ x1, y1, x2, y2 }, speed, halfSpeed) {
  */
 export function createParticles({ x1, y1, x2, y2 }, count = 200, speed = 4) {
   const array = new Array(count);
-  const maxSpeed = speed + 2;
-  const halfSpeed = Math.floor(maxSpeed / 2);
+  const halfSpeed = Math.floor(speed / 2);
   for (let i = 0; i < count; i++) {
-    array[i] = createParticle({ x1, y1, x2, y2 }, maxSpeed, halfSpeed);
+    array[i] = createParticle({ x1, y1, x2, y2 }, speed, halfSpeed);
   }
   return array;
 }
