@@ -1,5 +1,3 @@
-import { nearestParticles, moveWithinCanvas } from "./particles.js";
-
 /**
  *
  * @param {HTMLCanvasElement} canvas
@@ -20,43 +18,64 @@ export function resizer(canvas) {
  * @param {Array} particles
  * @param {Number} distance
  */
-export function draw(canvas, particles, { distance, strokeStyle }) {
+export function draw(
+  canvas,
+  particles,
+  { distance, strokeStyle, fillStyle, size }
+) {
   const threshold = 0;
   const { width, height } = canvas;
   const distanceSquare = distance * distance;
   const context = canvas.getContext("2d");
+  size = size || 2;
+  const halfSize = size / 2;
 
-  context.fillStyle = "black";
+  context.save();
+  context.fillStyle = fillStyle || "black";
   context.strokeStyle = strokeStyle || "rgba(0,0,0,0.1)";
-
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.beginPath();
 
-  particles.forEach(function nearest(particle) {
-    const neighbourhood = nearestParticles(particle, particles, distanceSquare);
-    const length = neighbourhood.length;
-    for (let i = 0; i < length; i++) {
-      let neighbour = neighbourhood[i];
-      context.moveTo(particle.x, particle.y);
-      context.lineTo(neighbour.x, neighbour.y);
+  const x1 = 0 - threshold;
+  const y1 = 0 - threshold;
+  const x2 = width + threshold;
+  const y2 = height + threshold;
+  const count = particles.length;
+
+  for (let i = 0; i < count; i++) {
+    let particle = particles[i];
+
+    for (let j = 0; j < count; j++) {
+      if (i !== j) {
+        let neighbour = particles[j];
+        const dx = particle.x - neighbour.x;
+        const dy = particle.y - neighbour.y;
+        if (dx * dx + dy * dy < distanceSquare && j > i) {
+          context.moveTo(particle.x, particle.y);
+          context.lineTo(neighbour.x, neighbour.y);
+        }
+      }
     }
-  });
+  }
 
   context.stroke();
 
-  particles.forEach(particle => context.fillRect(particle.x, particle.y, 2, 2));
+  for (let i = 0; i < count; i++) {
+    let particle = particles[i];
 
-  const x1 = -threshold;
-  const y1 = -threshold;
-  const x2 = width + threshold;
-  const y2 = height + threshold;
+    context.fillRect(particle.x - halfSize, particle.y - halfSize, size, size);
 
-  particles.forEach(particle =>
-    moveWithinCanvas(particle, {
-      x1,
-      x2,
-      y1,
-      y2
-    })
-  );
+    particle.x += particle.vx;
+    particle.y += particle.vy;
+
+    if (particle.x < x1 || particle.x > x2) {
+      particle.vx = -particle.vx;
+    }
+
+    if (particle.y < y1 || particle.y > y2) {
+      particle.vy = -particle.vy;
+    }
+  }
+
+  context.restore();
 }

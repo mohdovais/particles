@@ -20,25 +20,32 @@
 <body>
     <canvas id="canvas" width="600" height="600"></canvas>
     <script type="module">
-        import { init } from './dist/particles.esm.js';
-        var destroy;
+        //import { init } from './dist/particles.esm.js';
+        import { init } from './src/main.js';
+        (function () {
+            var destroy;
 
-        function onResize() {
-            const { innerWidth, innerHeight } = window;
-            const count = Math.round((innerWidth + innerHeight) / 10);
+            function onResize() {
+                const { innerWidth, innerHeight } = window;
+                const count = Math.round((innerWidth + innerHeight) / 10);
 
-            if (typeof destroy === 'function') {
-                destroy();
+                if (typeof destroy === 'function') {
+                    destroy();
+                }
+
+                destroy = init(document.getElementById('canvas'), {
+                    count,
+                    distance: (count / 2) | 0,
+                    //speed: 4,
+                    //fillStyle: 'red',
+                    //strokeStyle: 'green',
+                    //size: 10,
+                    //animate: false
+                });
             }
-
-            destroy = init(document.getElementById('canvas'), {
-                count,
-                distance: Math.floor(count / 2),
-                speed: 4
-            });
-        }
-        window.addEventListener('resize', onResize);
-        onResize();
+            window.addEventListener('resize', onResize);
+            onResize();
+        }());
 
     </script>
 </body>

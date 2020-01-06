@@ -7,7 +7,10 @@ import { win, reqAnimationFrame, EVENT_NAME_RESIZE } from "./contants.js";
  * @param {HTMLCanvasElement} canvas
  * @param {Object} config
  */
-export function init(canvas, { count, distance, speed, animate, strokeStyle }) {
+export function init(
+  canvas,
+  { count, distance, speed, animate, strokeStyle, fillStyle, size }
+) {
   const onResize = resizer(canvas);
   const { width, height } = onResize();
   const particles = createParticles(
@@ -24,7 +27,7 @@ export function init(canvas, { count, distance, speed, animate, strokeStyle }) {
   win.addEventListener(EVENT_NAME_RESIZE, onResize);
 
   function redraw() {
-    draw(canvas, particles, { distance, strokeStyle });
+    draw(canvas, particles, { distance, strokeStyle, fillStyle, size });
     if (animate !== false) {
       reqAnimationFrame(redraw);
     }

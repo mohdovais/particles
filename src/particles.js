@@ -1,4 +1,3 @@
-import { filter } from "./array.js";
 const math = Math;
 const random = math.random;
 const ceil = math.ceil;
@@ -15,10 +14,10 @@ function createParticle({ x1, y1, x2, y2 }, speed, halfSpeed) {
 }
 
 /**
- * 
- * @param {Object} boundry 
- * @param {Number} count 
- * @param {Number} speed 
+ *
+ * @param {Object} boundry
+ * @param {Number} count
+ * @param {Number} speed
  * @returns {Object[]}
  */
 export function createParticles({ x1, y1, x2, y2 }, count = 200, speed = 4) {
@@ -28,39 +27,4 @@ export function createParticles({ x1, y1, x2, y2 }, count = 200, speed = 4) {
     array[i] = createParticle({ x1, y1, x2, y2 }, speed, halfSpeed);
   }
   return array;
-}
-
-/**
- * 
- * @param {Object} particle 
- * @param {Object[]} particles 
- * @param {Number} distanceSquare 
- */
-export function nearestParticles(particle, particles, distanceSquare = 2500) {
-  return filter(particles, neighbour => {
-    if (neighbour === particle) {
-      return false;
-    }
-    const dx = particle.x - neighbour.x;
-    const dy = particle.y - neighbour.y;
-    return dx * dx + dy * dy < distanceSquare;
-  });
-}
-
-/**
- * 
- * @param {Object} particle 
- * @param {Object} boundry 
- */
-export function moveWithinCanvas(particle, { x1, y1, x2, y2 }) {
-  particle.x += particle.vx;
-  particle.y += particle.vy;
-
-  if (particle.x < x1 || particle.x > x2) {
-    particle.vx = -particle.vx;
-  }
-
-  if (particle.y < y1 || particle.y > y2) {
-    particle.vy = -particle.vy;
-  }
 }
