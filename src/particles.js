@@ -5,9 +5,14 @@ const ceil = math.ceil;
 function createParticle({ x1, y1, x2, y2 }, speed, halfSpeed) {
   const vx = ceil(random() * speed) - halfSpeed;
   const vy = ceil(random() * speed) - halfSpeed;
+  const x = x1 + ceil(random() * x2);
+  const y = y1 + ceil(random() * y2);
+  const r = Math.sqrt(x * x + y * y);
+
   return {
-    x: x1 + ceil(random() * x2),
-    y: y1 + ceil(random() * y2),
+    x,
+    y,
+    r,
     vx: vx === 0 ? 1 : vx,
     vy: vy === 0 ? 1 : vy
   };

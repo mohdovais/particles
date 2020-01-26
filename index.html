@@ -24,6 +24,7 @@
         import { init } from './src/main.js';
         (function () {
             var destroy;
+            const canvas = document.getElementById('canvas');
 
             function onResize() {
                 const { innerWidth, innerHeight } = window;
@@ -33,7 +34,7 @@
                     destroy();
                 }
 
-                destroy = init(document.getElementById('canvas'), {
+                destroy = init(canvas, {
                     count,
                     distance: (count / 2) | 0,
                     //speed: 4,
