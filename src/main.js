@@ -1,4 +1,4 @@
-import { createParticles } from "./particles.js";
+import { createParticles, moveParticles } from "./particles.js";
 import { draw, resizer } from "./canvas.js";
 import { win, reqAnimationFrame, EVENT_NAME_RESIZE } from "./contants.js";
 
@@ -34,31 +34,7 @@ export function init(
     draw(canvas, particles, { distance, strokeStyle, fillStyle, size });
 
     if (animate !== false) {
-      const threshold = 0;
-      const { width, height } = canvas;
-      const x1 = 0 - threshold;
-      const y1 = 0 - threshold;
-      const x2 = width + threshold;
-      const y2 = height + threshold;
-
-      for (let i = 0; i < count; i++) {
-        let particle = particles[i];
-
-        const pX = particle.x + particle.vx;
-        const pY = particle.y + particle.vy;
-        particle.x = pX;
-        particle.y = pY;
-        particle.r = Math.sqrt(pX * pX + pY * pY);
-
-        if (pX < x1 || pX > x2) {
-          particle.vx = -particle.vx;
-        }
-
-        if (pY < y1 || pY > y2) {
-          particle.vy = -particle.vy;
-        }
-      }
-
+      moveParticles(particles, width, height);
       reqAnimationFrame(redraw);
     }
   }

@@ -37,15 +37,20 @@ export function draw(
 
   for (let i = 0; i < count; i++) {
     let particle = particles[i];
+    let R = particle.r + distance;
 
     for (let j = i + 1; j < count; j++) {
       let neighbour = particles[j];
-      const dx = particle.x - neighbour.x;
-      const dy = particle.y - neighbour.y;
-      if (dx * dx + dy * dy < distanceSquare) {
-        context.moveTo(particle.x, particle.y);
-        context.lineTo(neighbour.x, neighbour.y);
-      } else if (Math.abs(particle.r - neighbour.r) > distance) {
+
+      if (neighbour.r < R) {
+        const dx = particle.x - neighbour.x;
+        const dy = particle.y - neighbour.y;
+
+        if (dx * dx + dy * dy < distanceSquare) {
+          context.moveTo(particle.x, particle.y);
+          context.lineTo(neighbour.x, neighbour.y);
+        }
+      }else{
         break;
       }
     }

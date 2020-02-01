@@ -19,9 +19,10 @@
 
 <body>
     <canvas id="canvas" width="600" height="600"></canvas>
-    <script type="module">
-        //import { init } from './dist/particles.esm.js';
-        import { init } from './src/main.js';
+    <script src="dist/particles.umd.js"></script>
+    <script>
+        //i mport { init } from './dist/particles.esm.js';
+        // import { init } from './src/main.js';
         (function () {
             var destroy;
             const canvas = document.getElementById('canvas');
@@ -30,11 +31,13 @@
                 const { innerWidth, innerHeight } = window;
                 const count = Math.round((innerWidth + innerHeight) / 10);
 
+                console.log(count)
+
                 if (typeof destroy === 'function') {
                     destroy();
                 }
 
-                destroy = init(canvas, {
+                destroy = particles.init(canvas, {
                     count,
                     distance: (count / 2) | 0,
                     //speed: 4,
