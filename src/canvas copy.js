@@ -26,6 +26,7 @@ export function draw(
   const distanceSquare = distance * distance;
   const context = canvas.getContext("2d");
   size = size === undefined ? 2 : size;
+  context.filter = "blur(100)";
   const halfSize = size / 2;
 
   context.fillStyle = fillStyle || "black";
@@ -34,6 +35,7 @@ export function draw(
   context.beginPath();
 
   const count = particles.length;
+  let loopCount = 0;
 
   for (let i = 0; i < count; i++) {
     let particle = particles[i];
@@ -41,6 +43,7 @@ export function draw(
 
     for (let j = i + 1; j < count; j++) {
       let neighbour = particles[j];
+      loopCount++;
 
       if (neighbour.r < R) {
         const dx = particle.x - neighbour.x;
@@ -57,6 +60,8 @@ export function draw(
 
     context.fillRect(particle.x - halfSize, particle.y - halfSize, size, size);
   }
+
+  //console.log(loopCount)
 
   context.stroke();
 }

@@ -1,23 +1,27 @@
-import { terser } from "rollup-plugin-terser";
-import buble from "@rollup/plugin-buble";
+import swc from "./rollup-plugin-swc";
+import resolver from "@rollup/plugin-node-resolve";
+
+const resolve = resolver({ extensions: [".ts"] });
 
 export default [
   {
-    input: "src/main.js",
+    input: "src/main.ts",
     output: {
       file: "dist/particles.esm.js",
       format: "esm",
-      name: "particles"
+      name: "particles",
+      sourcemap: true,
     },
-    plugins: [terser()]
+    plugins: [resolve, swc({ minify: true, target: "es2021" })],
   },
   {
-    input: "src/main.js",
+    input: "src/main.ts",
     output: {
       file: "dist/particles.umd.js",
       format: "umd",
-      name: "particles"
+      name: "particles",
+      sourcemap: true,
     },
-    plugins: [buble(), terser()]
-  }
+    plugins: [resolve, swc({ minify: true })],
+  },
 ];

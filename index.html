@@ -29,9 +29,8 @@
 
             function onResize() {
                 const { innerWidth, innerHeight } = window;
-                const count = Math.round((innerWidth + innerHeight) / 10);
+                const count = Math.round((innerWidth * innerHeight) * 5 / 10000);
 
-                console.log(count)
 
                 if (typeof destroy === 'function') {
                     destroy();
@@ -39,9 +38,9 @@
 
                 destroy = particles.init(canvas, {
                     count,
-                    distance: (count / 2) | 0,
+                    distance: 100,
                     //speed: 4,
-                    //fillStyle: 'red',
+                    //fillStyle: 'transparent',
                     //strokeStyle: 'green',
                     //size: 10,
                     //animate: false
