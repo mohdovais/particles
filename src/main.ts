@@ -6,8 +6,7 @@ type Config = {
   count: number;
   distance: number;
   speed: number;
-  animate;
-  boolean;
+  animate: boolean;
   strokeStyle: string;
   fillStyle: string;
   size: number;
@@ -15,12 +14,12 @@ type Config = {
 
 export function init(canvas: HTMLCanvasElement, config: Config) {
   var {
-    count,
-    distance,
-    speed,
+    count = 500,
+    distance = 100,
+    speed = 4,
     animate = true,
-    strokeStyle,
-    fillStyle,
+    strokeStyle = "rgba(0,0,0,0.1)",
+    fillStyle = "black",
     size = 2,
   } = config;
   const onResize = resizer(canvas);
@@ -38,17 +37,16 @@ export function init(canvas: HTMLCanvasElement, config: Config) {
 
   win.addEventListener(EVENT_NAME_RESIZE, onResize);
 
-  function redraw() {
-    particles.sort(function (a, b) {
-      return a.r - b.r;
-    });
+  let oldTimestamp = 0;
 
-    //console.time("draw")
-    draw(canvas, particles, { distance, strokeStyle, fillStyle, size });
-    //console.timeEnd("draw")
+  function redraw(timestamp = 0) {
+    if (timestamp - oldTimestamp > 16) {
+      draw(canvas, particles, { distance, strokeStyle, fillStyle, size });
+      moveParticles(particles, width, height);
+      oldTimestamp = timestamp;
+    }
 
     if (animate !== false) {
-      moveParticles(particles, width, height);
       reqAnimationFrame(redraw);
     }
   }
