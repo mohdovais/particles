@@ -23,11 +23,10 @@
     "url": "https://github.com/mohdovais/particles/issues"
   },
   "homepage": "https://github.com/mohdovais/particles#readme",
-  "dependencies": {},
   "devDependencies": {
-    "@rollup/plugin-buble": "^0.21.0",
-    "eslint": "^6.8.0",
-    "rollup": "^1.27.14",
-    "rollup-plugin-terser": "^5.1.3"
+    "@rollup/plugin-node-resolve": "^13.1.1",
+    "@swc/core": "^1.2.120",
+    "rollup": "^2.61.1",
+    "typescript": "^4.5.4"
   }
 }
