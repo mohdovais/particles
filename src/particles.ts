@@ -43,7 +43,7 @@ function createParticles(
 }
 
 function moveParticles(particles: Particle[], width: number, height: number) {
-  const threshold = 100;
+  const threshold = 0;
   const x1 = 0 - threshold;
   const y1 = 0 - threshold;
   const x2 = width + threshold;
@@ -58,6 +58,20 @@ function moveParticles(particles: Particle[], width: number, height: number) {
     particle.x = pX;
     particle.y = pY;
     particle.r = Math.sqrt(pX * pX + pY * pY);
+
+    /*
+    if (pX < x1) {
+      particle.x = x2;
+    } else if (pX > x2) {
+      particle.x = x1;
+    }
+
+    if (pY < y1) {
+      particle.y = y2;
+    } else if (pY > y2) {
+      particle.y = y1;
+    }
+    */
 
     if (pX < x1 || pX > x2) {
       particle.vx = -particle.vx;

@@ -15,107 +15,109 @@ export const ${Fragment} = React.Fragment;
 const import_virtual = `import { ${createElement}, ${Fragment} } from "${virtual_module_name}";`;
 
 function transpile_with_swc(config) {
-    const { code, fileName, target = "es5" } = config;
-    const jsx = regexp_jsx.test(fileName);
+  const { code, fileName, target = "es5" } = config;
+  const jsx = regexp_jsx.test(fileName);
 
-    const parser = regexp_typescript.test(fileName)
-        ? {
-            syntax: "typescript",
-            tsx: jsx,
-        }
-        : {
-            syntax: "ecmascript",
-            jsx,
-        };
+  const parser = regexp_typescript.test(fileName)
+    ? {
+        syntax: "typescript",
+        tsx: jsx,
+      }
+    : {
+        syntax: "ecmascript",
+        jsx,
+      };
 
-    return swc.transform((jsx ? import_virtual : "") + code, {
-        filename: fileName,
-        sourceMaps: true,
+  return swc.transform((jsx ? import_virtual : "") + code, {
+    filename: fileName,
+    sourceMaps: true,
 
-        jsc: {
-            parser,
-            target,
-            externalHelpers: true,
-            transform: {
-                react: {
-                    pragma: createElement,
-                    pragmaFrag: Fragment,
-                },
-            },
+    jsc: {
+      parser,
+      target,
+      externalHelpers: true,
+      transform: {
+        react: {
+          pragma: createElement,
+          pragmaFrag: Fragment,
         },
-    });
+      },
+    },
+  });
 }
 
 function minify_with_swc(options) {
-    const { code, fileName, sourcemap, target, minify: config } = options;
+  const { code, fileName, sourcemap, target, minify: config } = options;
 
-    let minify;
+  let minify;
 
-    if (config === true) {
-        minify = {
-            compress: {
-                dead_code: true,
-                computed_props: true,
-                conditionals: true,
-                unused: true,
-            },
-            mangle: true,
-        };
-    } else {
-        const { compress = {}, mangle = {} } = config;
-        minify = { compress, mangle };
-    }
+  if (config === true) {
+    minify = {
+      compress: {
+        dead_code: true,
+        computed_props: true,
+        conditionals: true,
+        unused: true,
+      },
+      mangle: {
+        topLevel: true,
+      },
+    };
+  } else {
+    const { compress = {}, mangle = {} } = config;
+    minify = { compress, mangle };
+  }
 
-    return swc.transform(code, {
-        filename: fileName,
-        sourceMaps: sourcemap,
-        jsc: {
-            target,
-            minify,
-        },
-        minify: true,
-    });
+  return swc.transform(code, {
+    filename: fileName,
+    sourceMaps: sourcemap,
+    jsc: {
+      target,
+      minify,
+    },
+    minify: true,
+  });
 }
 
 export default function swcPlugin(config = {}) {
-    const { minify = true, target } = config;
+  const { minify = true, target } = config;
 
-    return {
-        name: "SWC Plugin",
-        resolveId(source) {
-            if (source === virtual_module_name) {
-                return source;
-            }
-            return null;
-        },
-        load(source) {
-            if (source === virtual_module_name) {
-                return virtaul_module;
-            }
-            return null;
-        },
-        async transform(code, fileName) {
-            if (!regexp_script.test(fileName)) {
-                return null;
-            }
+  return {
+    name: "SWC Plugin",
+    resolveId(source) {
+      if (source === virtual_module_name) {
+        return source;
+      }
+      return null;
+    },
+    load(source) {
+      if (source === virtual_module_name) {
+        return virtaul_module;
+      }
+      return null;
+    },
+    async transform(code, fileName) {
+      if (!regexp_script.test(fileName)) {
+        return null;
+      }
 
-            return await transpile_with_swc({ code, fileName, target });
-        },
-        async renderChunk(code, chunk, outputOptions) {
-            const { fileName } = chunk;
-            const { sourcemap } = outputOptions;
+      return await transpile_with_swc({ code, fileName, target });
+    },
+    async renderChunk(code, chunk, outputOptions) {
+      const { fileName } = chunk;
+      const { sourcemap } = outputOptions;
 
-            if (minify) {
-                return await minify_with_swc({
-                    code,
-                    fileName,
-                    sourcemap,
-                    target,
-                    minify,
-                });
-            }
+      if (minify) {
+        return await minify_with_swc({
+          code,
+          fileName,
+          sourcemap,
+          target,
+          minify,
+        });
+      }
 
-            return null;
-        },
-    };
+      return null;
+    },
+  };
 }

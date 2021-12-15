@@ -21,35 +21,21 @@
     <canvas id="canvas" width="600" height="600"></canvas>
     <script src="dist/particles.umd.js"></script>
     <script>
-        //i mport { init } from './dist/particles.esm.js';
-        // import { init } from './src/main.js';
-        (function () {
-            var destroy;
-            const canvas = document.getElementById('canvas');
+        var stop;
+        const canvas = document.getElementById('canvas');
+        function start() {
+            const { innerWidth, innerHeight } = window;
+            const count = Math.round((innerWidth * innerHeight) * 2 / 10000);
 
-            function onResize() {
-                const { innerWidth, innerHeight } = window;
-                const count = Math.round((innerWidth * innerHeight) * 5 / 10000);
-
-
-                if (typeof destroy === 'function') {
-                    destroy();
-                }
-
-                destroy = particles.init(canvas, {
-                    count,
-                    distance: 100,
-                    //speed: 4,
-                    //fillStyle: 'transparent',
-                    //strokeStyle: 'green',
-                    //size: 10,
-                    //animate: false
-                });
+            if (typeof stop === 'function') {
+                stop();
             }
-            window.addEventListener('resize', onResize);
-            onResize();
-        }());
 
+            stop = particles.init(canvas, { count });
+        }
+
+        window.addEventListener('resize', start);
+        start();
     </script>
 </body>
 
